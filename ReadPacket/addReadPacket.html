@@ -1,0 +1,225 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=0">
+    <title>创建红包</title>
+    <script type="text/javascript" src="http://static.qingxixi.com/common/scripts/jq-lay.min.js"></script>
+    <link rel="stylesheet" href="http://static.qingxixi.com/common/css/boot-lay-swipe.min.css" />
+
+
+
+    <style type="text/css">
+        .container {
+            max-width: 680px;
+        }
+
+
+        .mainTitle {
+            height: 1.46667rem;
+            text-align: center;
+            font-size: .53333rem;
+            color: #4b525c;
+            line-height: 1.46667rem;
+            background: hsla(0,0%,98%,.98);
+            box-shadow: inset 0 -1px 0 0 rgba(0,0,0,.1);
+            position: fixed;
+            z-index: 8;
+            width: 100%;
+        }
+
+            .mainTitle p.break {
+                top: .25rem;
+                background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAD1BMVEUAAAD///9ye4pyfI1xe4pwDAb5AAAABHRSTlMAAZ1K4LdQdAAAADlJREFUOMtjGJ5A2BC7OKOKM3YJIRdnHBpcFHFocBIY1QADJggNmBKkGcWoMqqFQBIlnKgR2WCYAQBnFhIV1K2KegAAAABJRU5ErkJggg==) no-repeat 0 0;
+                background-size: 70%;
+                position: absolute;
+                left: .33333rem;
+                top: .25rem;
+                width: 1.33333rem;
+                height: 1.33333rem;
+            }
+
+        .form-content {
+            margin-top: 1.66667rem;
+        }
+
+        .form-group.showshare {
+            border: 1px solid rgba(234, 232, 232, 0.98);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .bookship {
+            width: 2.8rem;
+            height: 0px;
+            float: right;
+            border-top: 0.8em solid #09e0f9;
+            border-bottom: 0.8em solid #09e0f9;
+            border-right: 0.8em solid transparent;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            right: 0.2rem;
+            line-height: 0;
+            text-align: center;
+            color: white;
+        }
+
+        .showshare img {
+            width: 3.033333rem;
+            opacity: 0.8;
+        }
+
+        .caret_muted {
+            border-top: 4px solid #999;
+        }
+
+        /***更换图片***/
+        .lab-change-img {
+            margin: 0px;
+            margin-top: 32px;
+            padding: 0px;
+        }
+
+        .div-control-img {
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding:2px;
+        }
+
+        .inline-img {
+            text-align: center;
+            background-color: #eee;
+            overflow: hidden;
+            border-top: 2px solid #0dbdd1;
+        }
+
+            .inline-img li {
+                width: 33%;
+                text-align: center;
+                padding: 4px;
+                position: relative;
+                float: left;
+            }
+
+                .inline-img li img {
+                    width: 90%;
+                    border-radius: 10px;
+                }
+
+                .inline-img li .light {
+                    position: absolute;
+                    right: 12px;
+                    top: 6px;
+                    width: 16px;
+                    height: 16px;
+                    border-radius: 50%;
+                    background-color: #fff;
+                    background-size: contain;
+                    box-sizing: border-box;
+                }
+
+                    .inline-img li .light.active {
+                        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAzdJREFUWAnNV01oE1EQ/t7uNjGWtiY1UWut2jYHW81N6FEP/mBB0YMIPQiCKB57FRRavHry4MVjqSgoFQqKP/WoiBf7c1HR1vrTBGqTGDSl4Tmzm83PZpPspkl1YNm3s+/N972Z2dl5Ak5lVnogo4chxUlI9NHVAUEXi8Q3GvM1ByEfQYSm0C9WnZgWVSfNRrdjTVwjw0OQsrXqfJ4gRIKIjkGTI+gP/ai0pjyB99KL39GrtLthMtBcyUiFdynyyk34QjcQFmm7efYEeNcZ+ZDAB+wWudYJvIIqTtt5o5TA9HIEcm2S3N3pGqjSAiEWAe0EIoHpwmnFBPSd403dwU1EJqHiYKEnFPMdOOa62+u88xwADdirjMFYWckTMBKuPjE3rdvdOa8YKytGCPRPTX4gXa3Zbtpzek9BE70cCsMD/J1vHDiTbNZrCw0EuMJlYjHHRYaX10O4WKnBoGKUV4cVziVwj0fFxO429HnV0pVcVam0EwGq7Q2QPU0Kprq34GiLB/lMtwARtkbVrs+iXvdjF4P3+BHSFJz6HMdMOmNvk7CZgPFHs5/iWtup79yPDgI/Mx/Hk18VfoqErVAaOiLAUdSq0NlBoC/I7bs8Cs4uxDGZrADOtgi7bHisWHe7WvE2HECbUly9zXnbNKGD76XEOzefwESiCrixUFISUiPhQB4k0oj4NNynrLZ6IqgKPO/2I0zZPrSQAM91JBLfOQSOCIyvpDGylMIRyupbO1ty9tsJ/BmB7yPw818SuBd3CM4WCJsJzOWsVRlcJwLjP//gUrsPw1t98BP4U4r5/k0qLiwmMUYkXQlhC8wsHUMGj50u9FIKcKINbG7Cx9UMeinmFwn8DhFzLSqO11SKOeavKSG52Fz5msTt5RrAc6WYu1duIF1ILCMx+GkFl2sFZyzGJOz/5HfMrTN3rxsljJVt1/NVxWjDX9atEy63Ge6QfaFDZpuer4Tct3PrrHev5VavU683pYRRcEbIE2Dbeii0wYaQMNvyrOvNrRQTYO2BwDu9dWZX1Uv0gwm145YzAZsvJcBaZslxEhilpxSrahQ+mo3qtiw7N+3lk9DUWO//7HBaQqQxx/O/EyglUl+/uCcAAAAASUVORK5CYII=)
+                    }
+
+                    .inline-img li .light.unactive {
+                        border: 1px solid #d2d2d2;
+                    }
+    </style>
+
+</head>
+<body class="container">
+
+    <div class="mainTitle row">
+        <span>创建分享文案</span><p class="break"></p>
+    </div>
+
+
+    
+
+    <div class="row">
+
+        <form class="form-horizontal col-sm-10 col-sm-offset-1 form-content" role="form">
+
+            
+
+            <div class="form-group showshare">
+                <section class="bookship">分享预览</section>
+                <div><h4 class="col-xs-12">福利大红包送给你</h4> </div>
+                <div>
+                    <p class="col-xs-8 text-muted" style="padding-right:0px;">支付宝红包天天送、更有机会领取1088元大红包</p>
+                    <img class="col-xs-4 pull-right" style="padding-right:0px;" src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
+                </div> 
+            </div>
+
+            <div class="form-group">
+                <label for="firstname" class="col-xs-3 control-label">分享标题</label>
+                <div class="col-xs-9">
+                    <input type="text" class="form-control" ng-model="umodel.UIName" placeholder="福利大红包送给你" id="_inp_uname">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="firstname" class="col-xs-3 control-label">分享图片</label>
+                <div class="col-xs-9">
+                    <div class="div-control-img">
+                        <img class="col-xs-4" src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
+                        <label class="text-muted lab-change-img">更换<span class="caret caret_muted"></span></label>
+                        <div class="col-xs-12" style="overflow:hidden">
+                            <ul class="list-inline inline-img">
+                                <li>
+                                    <img src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
+                                    <span class="light active"></span>
+                                </li>
+                                <li>
+                                    <img src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
+                                    <span class="light unactive"></span>
+                                </li>
+                                <li>
+                                    <img src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
+                                    <span class="light unactive"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="firstname" class="col-xs-3 control-label">分享描述</label>
+                <div class="col-xs-9">
+                    <textarea class="form-control" rows="4" placeholder="支付宝红包天天送、更有机会领取1088元大红包"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-1"></div>
+                <div class="col-xs-10">
+                    <button class="btn btn-block btn-info" type="button">创建</button>
+                </div>
+            </div>
+
+        </form>
+
+   
+
+    </div>
+
+    <script type="text/javascript">
+
+        //窗体改变事件
+        var recalc = function () {
+            var clientWidth = document.body.clientWidth;
+            if (clientWidth > 1024)
+                clientWidth = 414;
+
+            if (!clientWidth) return;
+            document.documentElement.style.fontSize = 60 * (clientWidth / 750) + 'px';
+        };
+        recalc();
+        document.addEventListener('DOMContentLoaded', recalc, false);
+        window.addEventListener('resize', recalc, false);
+    </script>
+
+</body>
+</html>
