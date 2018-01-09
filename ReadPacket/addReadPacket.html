@@ -19,13 +19,14 @@
             height: 1.46667rem;
             text-align: center;
             font-size: .53333rem;
-            color: #4b525c;
+            color: white;
             line-height: 1.46667rem;
-            background: hsla(0,0%,98%,.98);
+            background-color: #5bc0de;
             box-shadow: inset 0 -1px 0 0 rgba(0,0,0,.1);
             position: fixed;
             z-index: 8;
             width: 100%;
+            max-width: 680px;
         }
 
             .mainTitle p.break {
@@ -47,6 +48,7 @@
             border: 1px solid rgba(234, 232, 232, 0.98);
             border-radius: 4px;
             position: relative;
+            display:none;
         }
 
         .bookship {
@@ -82,9 +84,10 @@
         }
 
         .div-control-img {
-            border: 1px solid #ccc;
+            border: 1px solid #46b8da;
             border-radius: 4px;
-            padding:2px;
+            padding: 2px;
+            overflow: hidden;
         }
 
         .inline-img {
@@ -126,13 +129,16 @@
                     .inline-img li .light.unactive {
                         border: 1px solid #d2d2d2;
                     }
+        .form-control {
+            border: 1px solid #46b8da;
+        }
     </style>
 
 </head>
 <body class="container">
 
     <div class="mainTitle row">
-        <span>创建分享文案</span><p class="break"></p>
+        <span>创建支付宝红包分享</span><p class="break"></p>
     </div>
 
 
@@ -140,10 +146,7 @@
 
     <div class="row">
 
-        <form class="form-horizontal col-sm-10 col-sm-offset-1 form-content" role="form">
-
-            
-
+        <form class="form-horizontal col-sm-10 col-sm-offset-1 form-content" role="form"> 
             <div class="form-group showshare">
                 <section class="bookship">分享预览</section>
                 <div><h4 class="col-xs-12">福利大红包送给你</h4> </div>
@@ -151,6 +154,13 @@
                     <p class="col-xs-8 text-muted" style="padding-right:0px;">支付宝红包天天送、更有机会领取1088元大红包</p>
                     <img class="col-xs-4 pull-right" style="padding-right:0px;" src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
                 </div> 
+            </div>
+
+             <div class="form-group">
+                <label for="firstname" class="col-xs-3 control-label">口令</label>
+                <div class="col-xs-9">
+                    <input type="text" class="form-control" ng-model="umodel.UIName" placeholder="请输入黏贴支付宝口令" id="_inp_uname">
+                </div>
             </div>
 
             <div class="form-group">
@@ -165,8 +175,8 @@
                 <div class="col-xs-9">
                     <div class="div-control-img">
                         <img class="col-xs-4" src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
-                        <label class="text-muted lab-change-img">更换<span class="caret caret_muted"></span></label>
-                        <div class="col-xs-12" style="overflow:hidden">
+                        <label class="text-muted lab-change-img" style="display:none">更换<span class="caret caret_muted"></span></label>
+                        <div class="col-xs-12" style="overflow:hidden;display:none;">
                             <ul class="list-inline inline-img">
                                 <li>
                                     <img src="http://static.qingxixi.com/sharesale/imgs/wx-read-packet.jpg" />
@@ -188,9 +198,21 @@
             <div class="form-group">
                 <label for="firstname" class="col-xs-3 control-label">分享描述</label>
                 <div class="col-xs-9">
-                    <textarea class="form-control" rows="4" placeholder="支付宝红包天天送、更有机会领取1088元大红包"></textarea>
+                    <textarea class="form-control" rows="2" placeholder="支付宝红包天天送、更有机会领取1088元大红包"></textarea>
                 </div>
             </div>
+             <div class="form-group">
+                <label for="firstname" class="col-xs-3 control-label">分享文案</label>
+                <div class="col-xs-9">
+                    <textarea class="form-control" rows="2" placeholder="该文案在成功打开支付宝app后提示用户分享文案">红包到手 分享给好友一起领取吧</textarea>
+                </div>
+             </div>
+            <div class="form-group">
+                <label for="firstname" class="col-xs-3 control-label">复制文案</label>
+                <div class="col-xs-9">
+                    <textarea class="form-control" rows="2" placeholder="程序未唤醒支付宝app时提示用户复制口令文案">红包已发送您支付宝 请打开支付宝app领取</textarea>
+                </div>
+             </div>
 
             <div class="form-group">
                 <div class="col-xs-1"></div>
