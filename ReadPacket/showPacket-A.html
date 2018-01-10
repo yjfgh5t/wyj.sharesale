@@ -1,20 +1,21 @@
-﻿<html><head>
+﻿<html>
+<head>
     <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>显示红包</title>
 
     <style type="text/css">
-
         .redpack {
             height: 14.25rem;
             background: #cd533d;
-            width: 10rem; 
-            border-radius: 10px; 
-            text-align: center;  
+            width: 10rem;
+            border-radius: 10px;
+            text-align: center;
             position: absolute;
             top: 2rem;
             left: 50%;
             margin-left: -5rem;
+            z-index: 5;
         }
 
         .topcontent {
@@ -46,16 +47,19 @@
             margin-top: 1rem;
             border: 0.01rem solid #d85940;
         }
+
         .p-title {
-            font-size:0.5333rem;
+            font-size: 0.5333rem;
             color: #ebcd9a;
             margin-top: 0.6rem;
         }
+
         .p-msg {
             font-size: 0.85rem;
             color: #ebcd9a;
             letter-spacing: 0.15rem;
         }
+
         html {
             margin: 0;
             padding: 0;
@@ -66,20 +70,81 @@
             overflow-y: hidden;
             background: url(/imgs/bj-a.jpg) no-repeat top left;
             background-size: 100% 100%;
-            position:absolute;
+            position: absolute;
         }
+
+        .div-alt-msg {
+            font-size: 0.433rem;
+            width: 70%;
+            margin-left: 15%;
+            margin-top: 0.8rem;
+            background: white;
+            padding: 0.2rem;
+            line-height: 0.7rem;
+            border-radius: 0.2rem;
+            color: #797171;
+            visibility: hidden;
+        }
+
         .p-about {
             font-size: 0.4333rem;
             color: #fbfafa96;
-            margin-top: 4rem;
+            margin-top: 1.4rem;
             text-decoration: underline;
             letter-spacing: 0.07rem;
         }
+
+        /***遮罩层*/
+        .shade {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #0a0a0a63;
+            display: none;
+        }
+
+        /**消息*/
+        .div-showmsg {
+            display: none;
+            width: 100%;
+            position: absolute;
+            top: 20%;
+            font-size: 0.46666rem;
+        }
+
+            .div-showmsg .div-msg {
+                width: 52%;
+                margin-left: 20%;
+                margin-top: 0.8rem;
+                background: white;
+                padding: 0.2rem 4%;
+                line-height: 0.7rem;
+                border-radius: 0.2rem;
+                color: #797171;
+                text-align: center;
+            }
+
+        .div-btn {
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+            .div-btn span {
+                color: white;
+                padding: 0rem 0.4rem;
+                border: 1px solid;
+                margin-top: 0.5rem;
+                border-radius: 0.5rem;
+                background-color: #00c7ff;
+            }
     </style>
 
 </head>
-<body style="margin:0px;"> 
-    <div class="redpack">
+<body style="margin:0px;">
+
+    <div class="shade" id="_div_shade"></div>
+
+    <div class="redpack" id="_div_packet">
         <!--  红包的顶部盖子 -->
         <div class="topcontent">
             <img src="/imgs/icon-alipay.png" class="img-icon" />
@@ -90,7 +155,15 @@
         <div id="redpack-open">
             開
         </div>
-        <p class="p-about">关于我们</p>
+        <div class="div-alt-msg">
+            支付宝红包只有三天的有效期，请您尽快使用哦！
+        </div>
+        <p class="p-about" id="_p_about">关于我们</p>
+    </div>
+
+    <div class="div-showmsg" id="_div_showmsg">
+        <div class="div-msg" id="_div_msg">支付宝红包只有三天的有效期，请尽您快使用哦！</div>
+        <div class="div-btn"> <span id="_span_btn">我知道</span></div>
     </div>
 
     <script type="text/javascript">
@@ -107,7 +180,76 @@
         recalc();
         document.addEventListener('DOMContentLoaded', recalc, false);
         window.addEventListener('resize', recalc, false);
+
+        var vPage = {
+            dom: {
+                divShade: document.getElementById("_div_shade"),
+                divShowMsg: document.getElementById("_div_showmsg"),
+                divMsg: document.getElementById("_div_msg"),
+                spanBtn: document.getElementById("_span_btn"),
+                pAbout: document.getElementById("_p_about"),
+            },
+            //是否领取红包
+            hasGet: false,
+            //初始加载
+            init: function () {
+                //红包点击事件
+                document.getElementById("redpack-open").addEventListener("click", vPage.packetClick);
+                //按鈕点击
+                vPage.dom.spanBtn.addEventListener("click", vPage.iknow);
+                //关于我们点击
+                vPage.dom.pAbout.addEventListener("click", vPage.about)
+            },
+            //红包点击事件
+            packetClick: function () {
+
+                if (vPage.hasGet)
+                {
+                    vPage.showMsg("好的", "每天只能领取一次红包哦！若未领取，请您打开支付宝App领取");
+                    return;
+                }
+
+                if (1 == 2) { 
+                    vPage.showMsg("我知道", "支付宝红包只有三天的有效期，请尽您快使用哦！");
+                } else {
+                    vPage.showMsg("我已领取", "红包已发送至您的支付宝，快去打开支付宝App领取吧！");
+                }
+                vPage.hasGet = true;
+            },
+            //确定点击
+            iknow: function () {
+                var _self = vPage.dom.spanBtn;
+                if (_self.innerText == '我知道' || _self.innerText == "我已领取") {
+                    vPage.dom.divMsg.innerText = "点击右上角分享按钮和好友一起领红包吧！";
+                    _self.innerText = "好的";
+                } else if (_self.innerText == '赚赏金') {
+                    window.location.href = 'addReadPacket.html';
+                } else {
+                    vPage.dom.divShowMsg.style.display = "none";
+                    vPage.dom.divShade.style.display = "none";
+                }
+            },
+            //关于我们
+            about: function () {
+                vPage.showMsg("赚赏金", "此红包是由支付宝提供的分享红包口令给好友即可瓜分10亿赏金活动！为此掌上微营秀提供一个更加灵活、便利的程序分为您分发支付宝口令，赚取更多的赏金！")
+            },
+            showMsg: function (btnMsg, msg) {
+                //遮罩层
+                vPage.dom.divShade.style.display = "block";
+                vPage.dom.divShade.style.zIndex = 7;
+
+                //提示消息
+                vPage.dom.divShowMsg.style.display = "block";
+                vPage.dom.divShowMsg.style.zIndex = 8;
+                vPage.dom.divMsg.innerText = msg;
+                vPage.dom.spanBtn.innerText = btnMsg;
+            }
+        };
+
+        //运行加载方法
+        vPage.init();
     </script>
 
 
-</body></html>
+</body>
+</html>
